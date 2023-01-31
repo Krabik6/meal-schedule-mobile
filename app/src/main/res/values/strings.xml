@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">schedule-app</string>
+    <string name="header_login">Welcome back</string>
+    <string name="header_signup">Let\'s get started</string>
 </resources>
