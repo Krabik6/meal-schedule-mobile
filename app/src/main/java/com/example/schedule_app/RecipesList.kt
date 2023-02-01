@@ -1,86 +1,130 @@
 package com.example.schedule_app
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ArrayAdapter
+import android.util.Log
 import android.widget.ListView
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.dharmendra.searchview.CustomAdapter
 
 class RecipesList : AppCompatActivity() {
-    // on below line we are
-    // creating variables for listview
-    lateinit var recipesLV: ListView
-
-    // creating array adapter for listview
-    lateinit var listAdapter: ArrayAdapter<String>
-
-    // creating array list for listview
-    lateinit var recipesList: ArrayList<String>;
-
-    // creating variable for searchView
-    private lateinit var searchView: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipes_list)
 
-        // initializing variables of list view with their ids.
-        recipesLV = findViewById(R.id.idLVRecipes)
-        searchView = findViewById(R.id.idSV)
+        //Find View By Id For Listview
+        val listview = findViewById<ListView>(R.id.listView)
 
-        // initializing list and adding data to list
-        recipesList = ArrayList()
-        recipesList.add("omelet with rice")
-        recipesList.add("fried egg")
-        recipesList.add("scramble eggs")
-        recipesList.add("shakshuka")
-        recipesList.add("cheesecakes")
-        recipesList.add("avocado sandwich")
+        //Find View By Id For SearchView
+        val searchView = findViewById<SearchView>(R.id.searchView)
+
+        /*Create and ArrayList of Integer Type To Store Images From drawable.Here we add Images to ArrayList.
+        We have Images of Android Icons of Diffrent versions.
+        */
+        val image = ArrayList<Int>()
+        image.add(R.drawable.dish1)
+        image.add(R.drawable.dish2)
+        image.add(R.drawable.dish3)
+        image.add(R.drawable.dish4)
+        image.add(R.drawable.dish5)
+        image.add(R.drawable.dish6)
+        image.add(R.drawable.dish7)
+        image.add(R.drawable.dish8)
+        image.add(R.drawable.dish9)
+        image.add(R.drawable.dish10)
+        image.add(R.drawable.dish11)
+        image.add(R.drawable.dish12)
+        image.add(R.drawable.dish12)
+        image.add(R.drawable.dish14)
 
 
-        // initializing list adapter and setting layout
-        // for each list view item and adding array list to it.
-        listAdapter = ArrayAdapter<String>(
-            this,
-            android.R.layout.simple_list_item_1,
-            recipesList
-        )
+        // Here We take and Array of Android OS names in Same Sequence as we take Images.
 
-        // on below line setting list
-        // adapter to our list view.
-        recipesLV.adapter = listAdapter
+        val name = arrayOf("fish with a rice", "chicken with smash potato and vegetables", "assorted sea creatures", "fried chicken with fries", "pig stakes", "meat balls with fries", "meat roulette",
+            "chicken stake with fries and fresh salad", "pasta pomodoro", "beef cari", "stakes with sauce and fries", "salad and bread with baked pasta", "Shrimps with peppers")
 
-        recipesLV.setOnItemClickListener{parent, view, position, id ->
-            Toast.makeText(this,"Pressed item position: $position. Text: ${recipesList.get(position)}. Id: $id", Toast.LENGTH_SHORT).show()
+
+        // Here We take and Array of Android OS Version in Same Sequence as we take Images and name.
+
+        val duration = arrayOf("15", "16", "20", "22", "24", "30", "40",
+            "41", "44", "50", "60", "70", "80", "59", "1")
+
+
+        /*Create ArrayList of HashMap to Store Name and Version with Key value Pair at Same poition
+
+        Ex:-
+                At Position 1:
+                                name:"Cupcake"
+                                version:"1.5"
+                At Position 2:
+                                name:"Donut"
+                                version:"1.6"
+                                .
+                                .
+                                .
+                                So On
+        */
+        val info = ArrayList<HashMap<String, String>>()
+
+        //Here We take HashMap in that we add Name and Version from Array
+        var hashMap: HashMap<String, String> = HashMap<String, String>()
+
+        for (i in name.indices) {
+            hashMap = HashMap<String, String>()
+            hashMap["name"] = name[i]
+            hashMap["duration"] = duration[i]
+
+            //Add HashMap to ArrayList
+            info.add(hashMap)
+
+            /*
+            ArrayList Start with Position 0
+
+             So we have At position 0:
+
+                                name:"Cupcake"
+                                version:"1.5"
+
+            */
+
         }
 
-        // on below line we are adding on query
-        // listener for our search view.
+        //We Have Created Custom Adapter Class in that we pass Context,Array of Image and ArrayList<Hashmap<String,String>>
+        val customAdapter = CustomAdapter(this, image, info)
+
+
+        //Set Adapter to ArrayList
+        listview.adapter = customAdapter
+
+        //On Click for ListView Item
+        listview.setOnItemClickListener { adapterView, view, position, l ->
+
+            //Provide the data on Click position in our listview
+            val hashMap: HashMap<String, String> = customAdapter.getItem(position) as HashMap<String, String>
+            Log.d("RecipesList", "1")
+
+            Toast.makeText(this@RecipesList, "Name : " + hashMap["name"] + "\nduration : " + hashMap["duration"], Toast.LENGTH_SHORT).show()
+            Log.d("RecipesList", "2")
+        }
+
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                // on below line we are checking
-                // if query exist or not.
-                if (recipesList.contains(query)) {
-                    // if query exist within list we
-                    // are filtering our list adapter.
-                    listAdapter.filter.filter(query)
-                } else {
-                    // if query is not present we are displaying
-                    // a toast message as no  data found..
-                    Toast.makeText(this@RecipesList, "No Recipes found..", Toast.LENGTH_LONG)
-                        .show()
-                }
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                // if query text is change in that case we
-                // are filtering our adapter with
-                // new text on below line.
-                listAdapter.filter.filter(newText)
+
+                val text = newText
+                /*Call filter Method Created in Custom Adapter
+                    This Method Filter ListView According to Search Keyword
+                 */
+                customAdapter.filter(text)
                 return false
             }
         })
+
     }
+
 }
