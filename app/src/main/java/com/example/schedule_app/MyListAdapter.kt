@@ -8,6 +8,7 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.schedule_app.R
+import com.example.schedule_app.models.ModelRow
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -18,15 +19,15 @@ import kotlin.collections.ArrayList
 
 //Here We extend over Adapter With BaseAdapter()
 
-class CustomAdapter(context: Context, image: ArrayList<Int>, arrayList: ArrayList<HashMap<String, String>>) : BaseAdapter() {
+class CustomAdapter(context: Context, arrayList: ArrayList<ModelRow>) : BaseAdapter() {
 
     //Passing Values to Local Variables
-    var image = image
+//    var image = image
     var arrayList = arrayList
     var context = context
 
     //Store image and arraylist in Temp Array List we Required it later
-    var tempArrayList = ArrayList(image)
+//    var tempArrayList = ArrayList(image)
     var tempNameVersionList = ArrayList(arrayList)
 
 
@@ -60,7 +61,7 @@ class CustomAdapter(context: Context, image: ArrayList<Int>, arrayList: ArrayLis
             holder.mSubHeader = myview!!.findViewById<TextView>(R.id.durationRow) as TextView
 
             //Set A Tag to Identify our view.
-            myview.setTag(holder)
+            myview.tag = holder
         } else {
 
             //If Ouer View in not Null than Just get View using Tag and pass to holder Object.
@@ -68,16 +69,16 @@ class CustomAdapter(context: Context, image: ArrayList<Int>, arrayList: ArrayLis
         }
 
         //Getting HasaMap At Perticular Position
-        val map = arrayList.get(position)
+        val map = arrayList[position]
 
         //Setting Image to ImageView by position
-        holder.mImageView!!.setImageResource(image[position])
+        holder.mImageView!!.setImageResource(map.image)
 
         //Setting name to TextView it's Key from HashMap At Position
-        holder.mHeader!!.setText(map.get("name"))
+        holder.mHeader!!.setText(map.title)
 
         //Setting version to TextView it's Key from HashMap At Position
-        holder.mSubHeader!!.setText(map.get("duration"))
+        holder.mSubHeader!!.setText(map.desc)
 
 
         return myview
@@ -120,15 +121,14 @@ class CustomAdapter(context: Context, image: ArrayList<Int>, arrayList: ArrayLis
 
 
         //Our Search text
-        val text = text!!.toLowerCase(Locale.getDefault())
+        val text = text!!.lowercase(Locale.getDefault())
 
 
         //Here We Clear Both ArrayList because We update according to Search query.
-        image.clear()
         arrayList.clear()
 
 
-        if (text.length == 0) {
+        if (text.isEmpty()) {
 
             /*If Search query is Empty than we add all temp data into our main ArrayList
 
@@ -136,26 +136,23 @@ class CustomAdapter(context: Context, image: ArrayList<Int>, arrayList: ArrayLis
 
             */
 
-            image.addAll(tempArrayList)
             arrayList.addAll(tempNameVersionList)
 
 
         } else {
 
 
-            for (i in 0..tempNameVersionList.size - 1) {
+            for (i in 0 until tempNameVersionList.size) {
 
                 /*
                 If our Search query is not empty than we Check Our search keyword in Temp ArrayList.
                 if our Search Keyword in Temp ArrayList than we add to our Main ArrayList
                 */
 
-                if (tempNameVersionList.get(i).get("name")!!.toLowerCase(Locale.getDefault()).contains(text)) {
-
-                    image.add(tempArrayList.get(i))
-                    arrayList.add(tempNameVersionList.get(i))
-
-
+                if (tempNameVersionList[i].title!!.lowercase(Locale.getDefault())
+                        .contains(text)
+                ) {
+                    arrayList.add(tempNameVersionList[i])
                 }
 
             }

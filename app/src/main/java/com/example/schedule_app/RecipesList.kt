@@ -7,6 +7,7 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dharmendra.searchview.CustomAdapter
+import com.example.schedule_app.models.ModelRow
 
 class RecipesList : AppCompatActivity() {
 
@@ -66,18 +67,21 @@ class RecipesList : AppCompatActivity() {
                                 .
                                 So On
         */
-        val info = ArrayList<HashMap<String, String>>()
+        val info = ArrayList<ModelRow>()
 
         //Here We take HashMap in that we add Name and Version from Array
-        var hashMap: HashMap<String, String> = HashMap<String, String>()
+        var tempInfo: ModelRow
 
         for (i in name.indices) {
-            hashMap = HashMap<String, String>()
-            hashMap["name"] = name[i]
-            hashMap["duration"] = duration[i]
+//            hashMap = HashMap<String, String>()
+//            hashMap["name"] = name[i]
+//            hashMap["duration"] = duration[i]
+
+            tempInfo = ModelRow(name[i], duration[i], image[i])
+
 
             //Add HashMap to ArrayList
-            info.add(hashMap)
+            info.add(tempInfo)
 
             /*
             ArrayList Start with Position 0
@@ -92,7 +96,7 @@ class RecipesList : AppCompatActivity() {
         }
 
         //We Have Created Custom Adapter Class in that we pass Context,Array of Image and ArrayList<Hashmap<String,String>>
-        val customAdapter = CustomAdapter(this, image, info)
+        val customAdapter = CustomAdapter(this,  info)
 
 
         //Set Adapter to ArrayList
@@ -102,10 +106,10 @@ class RecipesList : AppCompatActivity() {
         listview.setOnItemClickListener { adapterView, view, position, l ->
 
             //Provide the data on Click position in our listview
-            val hashMap: HashMap<String, String> = customAdapter.getItem(position) as HashMap<String, String>
+            val tempInfo: ModelRow = customAdapter.getItem(position) as ModelRow
             Log.d("RecipesList", "1")
 
-            Toast.makeText(this@RecipesList, "Name : " + hashMap["name"] + "\nduration : " + hashMap["duration"], Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@RecipesList, "Name : " + tempInfo.title + "\nduration : " + tempInfo.desc, Toast.LENGTH_SHORT).show()
             Log.d("RecipesList", "2")
         }
 
@@ -116,11 +120,10 @@ class RecipesList : AppCompatActivity() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
 
-                val text = newText
                 /*Call filter Method Created in Custom Adapter
                     This Method Filter ListView According to Search Keyword
                  */
-                customAdapter.filter(text)
+                customAdapter.filter(newText)
                 return false
             }
         })
