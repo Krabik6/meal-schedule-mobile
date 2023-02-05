@@ -12,14 +12,18 @@
         android:theme="@style/Theme.Scheduleapp"
         tools:targetApi="31" >
         <activity
+            android:name=".NavDrawer"
+            android:exported="false"
+            android:label="@string/title_activity_nav_drawer"
+            android:theme="@style/Theme.Scheduleapp.NoActionBar" />
+        <activity
             android:name=".RecipesList"
             android:exported="false" />
-
         <activity
             android:name=".SignUp"
             android:exported="false" />
         <activity
-            android:name=".LogIn"
+            android:name=".MainActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

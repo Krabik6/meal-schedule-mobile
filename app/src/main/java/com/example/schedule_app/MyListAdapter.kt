@@ -1,4 +1,4 @@
-package com.dharmendra.searchview
+package com.example.schedule_app
 
 import android.app.Activity
 import android.content.Context
@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import com.example.schedule_app.R
 import com.example.schedule_app.models.ModelRow
 import java.util.*
 import kotlin.collections.ArrayList
