@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/recipesListFragment">
+
+    <fragment
+        android:id="@+id/recipesListFragment"
+        android:name="com.example.schedule_app.ui.fragments.main.recipesList.RecipesListFragment"
+        android:label="RecipesListFragment"
+        tools:layout="@layout/fragment_recipes_list">
+        <action
+            android:id="@+id/action_recipesListFragment_to_recipeDetails"
+            app:destination="@id/recipeDetails" />
+    </fragment>
+    <fragment
+        android:id="@+id/recipeDetails"
+        android:name="com.example.schedule_app.ui.fragments.main.recipesList.recipeDetails.RecipeDetails"
+        android:label="RecipeDetails"
+        tools:layout="@layout/fragment_recipe_details"
+        >
+        <action
+            android:id="@+id/action_recipeDetails_to_recipesListFragment"
+            app:destination="@id/recipesListFragment" />
+    </fragment>
+</navigation>
+
+<!--todo delete or ...-->

@@ -3,25 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_recipes_list">
 
-    <fragment
-        android:id="@+id/nav_home"
-        android:name="com.example.schedule_app.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
-
-    <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.schedule_app.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
-
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.schedule_app.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
 
     <fragment
         android:id="@+id/nav_logout"
@@ -32,5 +15,20 @@
         android:id="@+id/nav_recipes_list"
         android:name="com.example.schedule_app.ui.fragments.main.recipesList.RecipesListFragment"
         android:label="@string/menu_recipes_list"
-        tools:layout="@layout/fragment_recipes_list" />
+        tools:layout="@layout/fragment_recipes_list" >
+        <action
+            android:id="@+id/action_nav_recipes_list_to_nav_recipe_details"
+            app:destination="@id/nav_recipe_details" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_recipe_details"
+        android:name="com.example.schedule_app.ui.fragments.main.recipesList.recipeDetails.RecipeDetails"
+        android:label="recipeDetails"
+        tools:layout="@layout/fragment_recipe_details" >
+        <action
+            android:id="@+id/action_nav_recipe_details_to_nav_recipes_list"
+            app:destination="@id/nav_recipes_list" />
+    </fragment>
+<!--    todo-->
+
 </navigation>

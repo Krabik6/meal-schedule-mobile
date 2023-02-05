@@ -8,11 +8,20 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import com.example.schedule_app.CustomAdapter
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import com.example.schedule_app.NavDrawer
+import com.example.schedule_app.NavDrawerActivity
 import com.example.schedule_app.R
+import com.example.schedule_app.databinding.FragmentRecipeDetailsBinding
 import com.example.schedule_app.databinding.FragmentRecipesListBinding
 import com.example.schedule_app.models.ModelRow
+import com.example.schedule_app.ui.fragments.main.recipesList.recipeDetails.RecipeDetails
+import com.example.schedule_app.ui.fragments.main.recipesList.recipeDetails.RecipeDetailsViewModel
 
 class RecipesListFragment : Fragment() {
 
@@ -20,6 +29,10 @@ class RecipesListFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    lateinit var binding2: FragmentRecipeDetailsBinding
+
+    private val data : RecipeDetailsViewModel by activityViewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +50,10 @@ class RecipesListFragment : Fragment() {
             textView.queryHint = it
 
         }
+
+        binding2 = FragmentRecipeDetailsBinding.inflate(inflater)
+//        navController = Navigation.findNavController()
+
         return root
     }
 
@@ -134,7 +151,13 @@ class RecipesListFragment : Fragment() {
 
             //Provide the data on Click position in our listview
             val tempInfo: ModelRow = customAdapter.getItem(position) as ModelRow
-            Log.d("RecipesList", "1")
+            data.data.value = tempInfo
+
+            NavDrawerActivity.navController.navigate(R.id.action_nav_recipes_list_to_nav_recipe_details)
+
+            val fragment = RecipeDetails()
+//            val transaction = fragmentManager?.beginTransaction()
+//            transaction?.replace(R.id.nav_host_fragment_content_nav_drawer, fragment)?.addToBackStack(null)?.commit()
 
             Toast.makeText(activity, "Name : " + tempInfo.title + "\nduration : " + tempInfo.desc, Toast.LENGTH_SHORT).show()
             Log.d("RecipesList", "2")

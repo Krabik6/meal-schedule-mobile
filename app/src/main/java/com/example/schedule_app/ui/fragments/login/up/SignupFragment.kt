@@ -1,10 +1,12 @@
 package com.example.schedule_app.ui.fragments.login.up
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.schedule_app.NavDrawer
 import com.example.schedule_app.R
 import com.example.schedule_app.databinding.FragmentSignupBinding
 import com.example.schedule_app.ui.fragments.login.`in`.LoginFragment
@@ -43,6 +45,11 @@ class SignupFragment : Fragment() {
 
             val transaction = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.fragmentContainerView, fragment)?.commit()
+        }
+
+        binding.signupButton.setOnClickListener{
+            val intent = Intent(activity, NavDrawer::class.java)
+            startActivity(intent)
         }
     }
 
